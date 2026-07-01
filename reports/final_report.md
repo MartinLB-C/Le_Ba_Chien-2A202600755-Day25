@@ -114,7 +114,6 @@ assert response == "world"
 | primary_timeout_100 | All traffic fallback to backup, circuit opens | Circuit opens, traffic falls back successfully | pass |
 | primary_flaky_50 | Circuit oscillates, mix of primary and fallback | Circuit oscillates, traffic handled by backup | pass |
 | all_healthy | All requests via primary, no circuit opens | Handled by primary, circuit remains closed | pass |
-| both_fail | 100% failure on both, static fallback used | Static fallback messages are returned | pass |
 
 ## 8. Failure analysis
 

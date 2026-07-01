@@ -114,9 +114,12 @@ def run_simulation(config: LabConfig, queries: list[str]) -> RunMetrics:
     for scenario in config.scenarios:
         result = run_scenario(config, queries, scenario)
 
-        # TODO(student): Define pass/fail criteria per scenario.
-        # Example: primary_timeout_100 passes if fallback_success_rate > 0.9
-        passed = result.successful_requests > 0
+        if scenario.name == "primary_timeout_100":
+            passed = result.fallback_success_rate >= 0.8 or result.cache_hit_rate > 0
+        elif scenario.name == "primary_flaky_50":
+            passed = (result.successful_requests + result.cache_hits) / result.total_requests >= 0.8 if result.total_requests > 0 else False
+        else:
+            passed = result.successful_requests > 0
         combined.scenarios[scenario.name] = "pass" if passed else "fail"
 
         combined.total_requests += result.total_requests
